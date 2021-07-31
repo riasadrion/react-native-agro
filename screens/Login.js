@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, Button } from 'react-native';
-function Login({ navigator }) {
-    console.log(navigator)
+function Login({ navigation }) {
     return (
         <div>
             <View style={styles.container}>
@@ -11,7 +10,7 @@ function Login({ navigator }) {
                 <Button
                     title="Home"
                     onPress={() =>
-                        navigator.navigate('Home', { name: 'Home' })
+                        navigation.navigate('Home', { name: 'Home' })
                     }
                 />
             </View>
