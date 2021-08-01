@@ -13,12 +13,14 @@ function Login({ navigation }) {
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>নাম</Text>
                         <TextInput
+                            placeholder={'আপনার নাম'}
                             style={styles.textInput}
                         />
                     </View>
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>মোবাইল নম্বর</Text>
                         <TextInput
+                            placeholder={'017-XXXXXXXX'}
                             style={styles.textInput}
                         />
                     </View>
@@ -52,15 +54,17 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 'bold',
         marginTop: 28,
-        marginBottom: 35
+        marginBottom: 35,
+        color: '#525252'
       },
       formLogin:{
           backgroundColor: '#d3eac3',
           paddingHorizontal: 40,
-          paddingTop: 30,
+          paddingTop: 40,
           paddingBottom: 30,
           borderTopRightRadius: 25,
-          borderTopLeftRadius: 25
+          borderTopLeftRadius: 25,
+          elevation: 2
       },
       inputGroup:{
           marginBottom: 12
@@ -68,20 +72,23 @@ const styles = StyleSheet.create({
       textInput: {
           backgroundColor: '#fff',
           height: 50,
-          width: 300,
-          borderRadius: 10
+          width: 310,
+          borderRadius: 7,
+          paddingHorizontal: 14,
+          fontSize: 20
       },
       label: {
           fontSize: 22,
           fontWeight: 'bold',
-          marginBottom: 5
+          marginBottom: 5,
+          color: '#525252'
       },
       btnLogin: {
-          width: 200,
+          width: 170,
           alignItems: 'center',
           backgroundColor: '#5fb748',
           paddingHorizontal: 7,
-          paddingVertical: 14,
+          paddingVertical: 12,
           borderRadius: 30,
           elevation: 5
       },
