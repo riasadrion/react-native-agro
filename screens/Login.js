@@ -25,7 +25,11 @@ function Login({ navigation }) {
                         />
                     </View>
                     <View style={{alignItems: 'center', marginVertical: 10}}>
-                        <Pressable style={styles.btnLogin} >
+                        <Pressable
+                            onPress={() =>
+                                navigation.navigate('Home', { name: 'Home' })
+                            } 
+                            style={styles.btnLogin} >
                             <Text style={styles.btnText}>প্রবেশ করুন</Text>
                         </Pressable>
                     </View>
@@ -63,6 +67,7 @@ const styles = StyleSheet.create({
         color: '#525252'
       },
       formLogin:{
+          width: '100%',
           backgroundColor: '#d3eac3',
           paddingHorizontal: 40,
           paddingTop: 40,

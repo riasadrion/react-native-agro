@@ -1,16 +1,17 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, TextInput } from 'react-native';
 
 function Home({ navigation }) {
     return (
             <View style={styles.container}>
-                <Text>This is Home</Text>
-                <Button
-                    title="Go to login"
-                    onPress={() =>
-                        navigation.navigate('Login', { name: 'Login'})
-                    }
-                />
+                <View style={styles.header}>
+                    <View>
+                        <Image style={styles.flag} source={require('../assets/images/user-demo-img.png')} />
+                    </View>
+                    <View>
+                        <TextInput style={styles.textInput}/>
+                    </View>
+                </View>
             </View>
     )
 }
@@ -18,17 +19,19 @@ function Home({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E9E9E9',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start'
       },
-      logoBg: {
-        backgroundColor: '#fff',
-        paddingTop: 50,
-        paddingBottom: 40,
-        paddingRight: 21,
-        paddingLeft: 31,
-        borderRadius: 100
+      header: {
+          flexDirection: 'row',
+          backgroundColor: '#d3eac3',
+          height: '12%',
+          width: '100%',
+          paddingHorizontal: 30,
+          paddingVertical: 30,
+          alignItems: 'flex-start',
+          justifyContent: 'center' 
       }
 });
 
