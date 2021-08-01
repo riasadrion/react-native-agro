@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Image, Button } from 'react-native';
 
 function Home({ navigation }) {
     return (
-        <div>
             <View style={styles.container}>
                 <Text>This is Home</Text>
                 <Button
@@ -13,7 +12,6 @@ function Home({ navigation }) {
                     }
                 />
             </View>
-        </div>
     )
 }
 
@@ -30,7 +28,7 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
         paddingRight: 21,
         paddingLeft: 31,
-        borderRadius: '50%'
+        borderRadius: 100
       }
 });
 

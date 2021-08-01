@@ -1,29 +1,44 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, TextInput, Label, Pressable } from 'react-native';
 function Login({ navigation }) {
     return (
-        <div>
             <View style={styles.container}>
                 <View style={styles.logoBg}>
-                <Image style={{width: 110, height: 73}} source={require('../assets/images/logo.png')} />
+                    <Image style={{width: 110, height: 73}} source={require('../assets/images/logo.png')} />
                 </View>
-                <Button
-                    title="Home"
-                    onPress={() =>
-                        navigation.navigate('Home', { name: 'Home' })
-                    }
-                />
+                <View>
+                    <Text style={styles.companyName}>A R MALIK SEEDS PVT. LTD.</Text>
+                </View>
+                <View style={styles.formLogin}>
+                    <View style={styles.inputGroup}>
+                        <Text style={styles.label}>নাম</Text>
+                        <TextInput
+                            style={styles.textInput}
+                        />
+                    </View>
+                    <View style={styles.inputGroup}>
+                        <Text style={styles.label}>মোবাইল নম্বর</Text>
+                        <TextInput
+                            style={styles.textInput}
+                        />
+                    </View>
+                    <View style={{alignItems: 'center', marginVertical: 10}}>
+                        <Pressable style={styles.btnLogin} >
+                            <Text style={styles.btnText}>প্রবেশ করুন</Text>
+                        </Pressable>
+                    </View>
+                </View>
             </View>
-        </div>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
         backgroundColor: '#E9E9E9',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
       },
       logoBg: {
         backgroundColor: '#fff',
@@ -31,7 +46,49 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
         paddingRight: 21,
         paddingLeft: 31,
-        borderRadius: '50%'
+        borderRadius: 100
+      },
+      companyName: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        marginTop: 28,
+        marginBottom: 35
+      },
+      formLogin:{
+          backgroundColor: '#d3eac3',
+          paddingHorizontal: 40,
+          paddingTop: 30,
+          paddingBottom: 30,
+          borderTopRightRadius: 25,
+          borderTopLeftRadius: 25
+      },
+      inputGroup:{
+          marginBottom: 12
+      },
+      textInput: {
+          backgroundColor: '#fff',
+          height: 50,
+          width: 300,
+          borderRadius: 10
+      },
+      label: {
+          fontSize: 22,
+          fontWeight: 'bold',
+          marginBottom: 5
+      },
+      btnLogin: {
+          width: 200,
+          alignItems: 'center',
+          backgroundColor: '#5fb748',
+          paddingHorizontal: 7,
+          paddingVertical: 14,
+          borderRadius: 30,
+          elevation: 5
+      },
+      btnText: {
+          fontWeight: 'bold',
+          color: '#fff', 
+          fontSize: 20
       }
 });
 
