@@ -4,7 +4,7 @@ function Login({ navigation }) {
     return (
             <View style={styles.container}>
                 <View style={styles.logoBg}>
-                    <Image style={{width: 110, height: 73}} source={require('../assets/images/logo.png')} />
+                    <Image style={{width: 110, height: 73}} source={require('../assets/logo.png')} />
                 </View>
                 <View>
                     <Text style={styles.companyName}>A R MALIK SEEDS PVT. LTD.</Text>
@@ -28,6 +28,11 @@ function Login({ navigation }) {
                         <Pressable style={styles.btnLogin} >
                             <Text style={styles.btnText}>প্রবেশ করুন</Text>
                         </Pressable>
+                    </View>
+                    <View style={styles.languageBar}>
+                        <Text style={{color: '#525252'}}>ভাষা পরিবর্তন করুন:</Text>
+                        <Image style={styles.flag} source={require('../assets/images/bd.png')} />
+                        <Image style={styles.flag} source={require('../assets/images/us.png')} />
                     </View>
                 </View>
             </View>
@@ -73,9 +78,9 @@ const styles = StyleSheet.create({
           backgroundColor: '#fff',
           height: 50,
           width: 310,
-          borderRadius: 7,
+          borderRadius: 25,
           paddingHorizontal: 14,
-          fontSize: 20
+          fontSize: 20,
       },
       label: {
           fontSize: 22,
@@ -96,6 +101,19 @@ const styles = StyleSheet.create({
           fontWeight: 'bold',
           color: '#fff', 
           fontSize: 20
+      },
+      languageBar: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingVertical: 10
+      },
+      flag: {
+          height: 25,
+          width: 35,
+          marginRight: 5,
+          marginLeft: 10,
+          borderRadius: 3
       }
 });
 
