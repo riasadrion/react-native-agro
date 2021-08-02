@@ -8,11 +8,11 @@ const Stack = createStackNavigator();
 const MainStacks = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: true }}>
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{ title: 'Welcome' }}
+          options={{ title: 'স্বাগতম' }}
         />
         <Stack.Screen name="Login" component={Login} />
       </Stack.Navigator>
