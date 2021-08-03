@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, Button, TextInput, TouchableOpacity } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons'; 
 import Main from '../components/layouts/Main';
 function Home({ navigation }) {
     return (
@@ -8,7 +7,7 @@ function Home({ navigation }) {
             <View style={styles.options}>
             <TouchableOpacity
                 onPress={() =>
-                    navigation.navigate('Home', { name: 'Home' })
+                    navigation.navigate('SeedsInfo', { name: 'SeedsInfo' })
                 } 
                 style={styles.btn} >
                 <Image style={{width: 30, height: 30, marginRight: 10}} source={require('../assets/images/store.png')} />
