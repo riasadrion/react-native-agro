@@ -1,16 +1,29 @@
 import React from 'react';
-import { useState } from 'react';
-import { StyleSheet, Text, View, Image, Modal, ScrollView, TouchableOpacity, ImageBackground, Pressable } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, Modal, ScrollView, TouchableOpacity, ImageBackground, Pressable, Platform } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
+
 function Seed(props) {
     const [modalOpen, setModalOpen] = useState(false);
+    const [nearestRepresentitive, setNearestRepresentitive] = useState(false);
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+    
+
+      
+    function nearestRepresentitiveHandler(){
+        // setNearestRepresentitive(true);
+            
+    };
     const [modalData, setModalData] = useState([{
         title: '',
+        topic: '',
         description: ''
     }]);
-    function modalHandler(title, description){
+    function modalHandler(title, topic, description){
         setModalData({
             title: title,
+            topic: topic,
             description: description
         });
         setModalOpen(true);
@@ -27,24 +40,24 @@ function Seed(props) {
                 <Text style={styles.pkgInfoText}>MRP. ৫০০ টাকা</Text>
             </View>
             <View style={styles.buttons}>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler('জাতের বৈশিষ্ট্য', props.item.info_1)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'জাতের বৈশিষ্ট্য', props.item.info_1)}>
                     <Text style={styles.btnText}>জাতের বৈশিষ্ট্য</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler('বপনকাল', props.item.info_2)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'বপনকাল', props.item.info_2)}>
                     <Text style={styles.btnText}>বপনকাল</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler('বীজের পরিমান', props.item.info_3)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'বীজের পরিমান', props.item.info_3)}>
                     <Text style={styles.btnText}>বীজের পরিমান</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler('চাষাবাদ পদ্ধতি', props.item.info_4)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'চাষাবাদ পদ্ধতি', props.item.info_4)}>
                     <Text style={styles.btnText}>চাষাবাদ পদ্ধতি</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler('রোগ ও প্রতিরোধ', props.item.info_5)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'রোগ ও প্রতিরোধ', props.item.info_5)}>
                     <Text style={styles.btnText}>রোগ ও প্রতিরোধ</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'রোগ ও প্রতিরোধ', props.item.info_5)}>
                 <Feather name="phone-call" size={12} style={{marginHorizontal: 7}} color="green" />
-                    <Text style={styles.btnText}>যোগাযোগ করুন</Text>
+                    <Text style={styles.btnText} onPress={() => nearestRepresentitiveHandler()}>যোগাযোগ করুন</Text>
                 </TouchableOpacity>
             </View>
             <Modal visible={modalOpen}>
@@ -55,17 +68,32 @@ function Seed(props) {
                         <Pressable onPress={() => setModalOpen(false)}>
                             <Feather name="x-circle" size={40} color="gray" />
                         </Pressable>
-                        <Text style={styles.modalTitle}>{modalData.title}</Text>
+                        <Text style={styles.modalTitle}>{modalData.title}: {modalData.topic}</Text>
                     </View>
 
                     <ScrollView style={styles.modalBody}>
-                        
+                        <Text style={styles.description}>{modalData.description}</Text>
                     </ScrollView>
 
                     <View style={styles.modalFooter}>
 
                     </View>
                 </View>
+            </Modal>
+            <Modal visible={nearestRepresentitive}>
+            <View style={styles.modal}>
+                <View style={styles.modalHeader}>
+                <Pressable onPress={() => setNearestRepresentitive(false)}>
+                    <Feather name="x-circle" size={40} color="gray" />
+                </Pressable>
+                </View>
+                <View style={styles.modalBody}>
+
+                </View>
+            </View>
+                <TouchableOpacity onPress={() => setNearestRepresentitive(false)}>
+                    <Text>close</Text>
+                </TouchableOpacity>
             </Modal>
         </View>
     )
@@ -148,5 +176,8 @@ const styles = StyleSheet.create({
     modalBody: {
 
     },
+    description: {
+        padding: 15
+    }
 });
 export default Seed;

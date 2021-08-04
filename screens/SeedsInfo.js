@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native';
 import Main from '../components/layouts/Main';
 import Seed from '../components/Seed';
+
 function SeedsInfo({ navigation }) {
     return (
         <Main>
@@ -56,7 +57,7 @@ const DATA = [
         title: 'সামার হোয়াইট',
         package: '১০ গ্রাম',
         mrp: '500',
-        info_1: 'জাতের বৈশিষ্ট্য ......',
+        info_1: 'এই জাতটি উচ্চমাত্রা সহনশীল এবং হালকা বৃষ্টিপাতেও ভালো ফলন দেয়।\n\nএর পাতাগুলি খাড়া প্রকৃতির হওয়ায় সূর্যের আলো সরাসরি ফুলকপির উপর পড়ে না ফলে রঙ সাদা থাকে। \n\nফুলকপি খুব টাইট হয় ও দীর্ঘ পরিবহনেও ভালো থাকে',
         info_2: 'বপনকাল ......',
         info_3: 'বীজের পরিমান ......',
         info_4: 'চাষাবাদ পদ্ধতি ......',
