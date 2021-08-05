@@ -1,18 +1,38 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native';
 import Main from '../components/layouts/Main';
 import Seed from '../components/Seed';
+import * as Location from 'expo-location';
+
 
 function SeedsInfo({ navigation }) {
+    const [location, setLocation] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+        }
+        let location = await Location.getCurrentPositionAsync({});
+        if(location){
+            setLocation(location);
+        }
+        })();
+    }, []);
+
     return (
         <Main>
             <View style={styles.main}>
                 <SafeAreaView style={styles.cards}>
                     <FlatList
                         data={DATA}
-                        renderItem={({ item }) => <Seed item={item} />}
+                        renderItem={({ item }) => <Seed location={location} item={item} />}
                         keyExtractor={(item) => item.id}
                         numColumns={2}
+                        extraData={location}
                     />
                 </SafeAreaView>
                         {/* <Seed /> */}
