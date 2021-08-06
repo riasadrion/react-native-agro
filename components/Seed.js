@@ -1,13 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, Modal, Linking, ScrollView, TouchableOpacity, ImageBackground, Pressable, ActivityIndicator } from 'react-native';
-import { Feather, Fontisto } from '@expo/vector-icons'; 
+import { StyleSheet, Text, View, Image, Modal, Linking, ScrollView, TouchableOpacity, ImageBackground, Pressable, ActivityIndicator, Alert } from 'react-native';
+import { Feather, Fontisto } from '@expo/vector-icons';
 
 function Seed(props) {
-    const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [nearestRepresentitive, setNearestRepresentitive] = useState(false);
-    // const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [modalData, setModalData] = useState([{
         title: '',
@@ -23,23 +22,27 @@ function Seed(props) {
     }]);
 
     function nearestRepresentitiveHandler(){
-        // console.log(props)
-        fetch('http://192.168.5.70/login_2018_19/api_mobile_controller/get_representatives_with_location/'+props.location.coords.latitude+'/'+props.location.coords.longitude+'/1', {
-        method: 'GET',
-        }).then(response => response.json())
-        .then((json) => {
-            if(json.code == 200){
-                setData({
-                    name: json.response.name,
-                    mobile_no: json.response.mobile_no,
-                    address: json.response.address,
-                    lat: json.response.current_latitude,
-                    lon: json.response.current_longitude,
-                });
-                console.log(json);
-            };
-        });
+        if(props.location){
+            fetch('http://192.168.5.70/login_2018_19/api_mobile_controller/get_representatives_with_location/'+props.location.coords.latitude+'/'+props.location.coords.longitude+'/1', {
+            method: 'GET',
+            }).then(response => response.json())
+            .then((json) => {
+                if(json.code == 200){
+                    setData({
+                        name: json.response.name,
+                        mobile_no: json.response.mobile_no,
+                        address: json.response.address,
+                        lat: json.response.current_latitude,
+                        lon: json.response.current_longitude,
+                    });
+                    console.log(json);
+                };
+            });
+        }else{
+            console.log('not found');
+        }
         setNearestRepresentitive(true);
+
     };
 
     function modalHandler(title, topic, description){
@@ -57,7 +60,7 @@ function Seed(props) {
                     <Text style={styles.title}>{props.item.title}</Text>
                 </View>
             </ImageBackground>
-                           
+
             <View style={styles.pkgInfo}>
                 <Text style={styles.pkgInfoText}>প্যাকেজঃ ১০ গ্রাম,
                 </Text>
@@ -111,15 +114,15 @@ function Seed(props) {
                             </Text>
                         </View>
                         <View style={styles.infoBox}>
-                            <Text style={styles.infoName}>{data.name}</Text> 
-                            <Text style={styles.infoMobile}>{data.mobile_no}</Text> 
-                            <Text style={styles.infoAddress}>{ data.address }</Text> 
+                            <Text style={styles.infoName}>{data.name}</Text>
+                            <Text style={styles.infoMobile}>{data.mobile_no}</Text>
+                            <Text style={styles.infoAddress}>{ data.address }</Text>
                             <TouchableOpacity style={styles.callBtn} onPress={()=>{Linking.openURL('tel:'+ data.mobile_no+'');}}>
                             <Feather name="phone" size={12} color="white" />
                                 <Text style={styles.callBtnText} >কল করুন</Text>
                             </TouchableOpacity>
                         </View>
-                        {/* <Text style={styles.info_name}>{ data.lat }</Text> 
+                        {/* <Text style={styles.info_name}>{ data.lat }</Text>
                         <Text style={styles.info_name}>{ data.lon }</Text>  */}
                     </View>
                     <View style={styles.modalFooter}>
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
     },
     buttons: {
        alignItems: 'center',
-       marginTop: 10 
+       marginTop: 10
     },
     btn: {
         flexDirection:'row',
@@ -187,7 +190,7 @@ const styles = StyleSheet.create({
         elevation: 2
     },
     btnText: {
-        color: '#525252', 
+        color: '#525252',
         fontSize: 13,
     },
     contactBtn: {
@@ -204,7 +207,7 @@ const styles = StyleSheet.create({
         elevation: 2
     },
     contactBtnText: {
-        color: '#fff', 
+        color: '#fff',
         fontSize: 13,
         marginLeft: 5,
         marginBottom:1
@@ -223,7 +226,7 @@ const styles = StyleSheet.create({
         elevation: 2
     },
     callBtnText: {
-        color: '#fff', 
+        color: '#fff',
         fontSize: 14,
         marginLeft: 5,
         marginBottom:1,
