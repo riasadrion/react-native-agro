@@ -96,11 +96,13 @@ class SeedsInfo extends React.Component {
     super(props);
     this.state = {
         currentLocation: "",
+        varieties: ""
     };
   }
   
   componentDidMount() {
-    (async () => {
+       // fetching location 
+        (async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
             setErrorMsg('Permission to access location was denied');
@@ -111,6 +113,18 @@ class SeedsInfo extends React.Component {
             this.setState({currentLocation: location});
         }
        })();
+
+       // fetching data 
+       fetch('http://192.168.5.70/login_2018_19/api_mobile_controller/get_varieties', {
+            method: 'GET',
+        }).then(response => response.json())
+        .then((json) => {
+            if(json.code == 200){
+                this.setState({varieties: json.data});
+                console.log(this.state.varieties)
+            }
+
+        });
   };
   render() {
     return (
@@ -119,11 +133,11 @@ class SeedsInfo extends React.Component {
               { this.state.currentLocation == "" ? <ActivityIndicator style={styles.loading} color="green" size="large" /> : null }
               <SafeAreaView style={styles.cards}>
                   <FlatList
-                      data={DATA}
-                      renderItem={({ item }) => <Seed getLocation={this.getLocation} location={this.state.currentLocation} item={item} />}
+                      data={this.state.varieties}
+                      renderItem={({ item }) => <Seed location={this.state.currentLocation} item={item} />}
                       keyExtractor={(item) => item.id}
                       numColumns={2}
-                      extraData={this.state.currentLocation, this.getLocation}
+                      extraData={this.state.currentLocation}
                     />
               </SafeAreaView>
           </View>

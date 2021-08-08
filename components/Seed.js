@@ -22,10 +22,10 @@ function Seed(props) {
         lat: '',
         lon: ''
     }]);
-
     function nearestRepresentitiveHandler(title){
         // setContact(false);
         if(props.location){
+            setLoading(true);
             fetch('http://45.251.57.52/demo/login_2018_19/api_mobile_controller/get_representatives_with_location/'+props.location.coords.latitude+'/'+props.location.coords.longitude+'/1', {
                 method: 'GET',
             }).then(response => response.json())
@@ -39,9 +39,10 @@ function Seed(props) {
                         lat: json.response.current_latitude,
                         lon: json.response.current_longitude,
                     });
+                    setLoading(false);
+                    setNearestRepresentitive(true);
                 };
             });
-            setNearestRepresentitive(true);
         }else{
             Alert.alert(
                 "সতর্কতা",
@@ -60,7 +61,6 @@ function Seed(props) {
         }
 
     };
-
     function modalHandler(title, topic, description){
         setModalData({
             title: title,
@@ -69,34 +69,41 @@ function Seed(props) {
         });
         setModalOpen(true);
     }
+    const item = props.item;
     return (
         <View style={styles.seedCard}>
-            <ImageBackground imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}} source={require('../assets/images/products/demo-seed.jpg')} resizeMode="cover" style={styles.image}>
+            <ImageBackground imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}} 
+            source={{
+            uri: item['images'][0],
+            }} resizeMode="cover" style={styles.image}>
                 <View style={{justifyContent: 'flex-start', flex:1}}>
-                    <Text style={styles.title}>{props.item.title}</Text>
+                    <Text style={styles.usp}>{item.usp.bn}</Text>
                 </View>
             </ImageBackground>
 
+            <View>
+                <Text style={styles.title}>{item['name_bn']}</Text>
+            </View>
             <View style={styles.pkgInfo}>
-                <Text style={styles.pkgInfoText}>প্যাকেজঃ ১০ গ্রাম,
+                <Text style={styles.pkgInfoText}>{item.pack_size.bn[0].packsize} {item.pack_size['bn'][0].unit}
                 </Text>
 
-                <Text style={styles.pkgInfoText}>MRP. ৫০০ টাকা</Text>
+                <Text style={styles.pkgInfoText}>{item.pack_size.bn[0].price}</Text>
             </View>
             <View style={styles.buttons}>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'জাতের বৈশিষ্ট্য', props.item.info_1)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(item['name_bn'],'জাতের বৈশিষ্ট্য',  item.variety_characteristics.bn)}>
                     <Text style={styles.btnText}>জাতের বৈশিষ্ট্য</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'বপনকাল', props.item.info_2)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(item['name_bn'],'বপনকাল', item.sowing_season.bn)}>
                     <Text style={styles.btnText}>বপনকাল</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'বীজের পরিমান', props.item.info_3)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(item['name_bn'],'বীজের পরিমান', item.seed_quantity.bn)}>
                     <Text style={styles.btnText}>বীজের পরিমান</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'চাষাবাদ পদ্ধতি', props.item.info_4)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(item['name_bn'],'চাষাবাদ পদ্ধতি', item.cultivation_method.bn)}>
                     <Text style={styles.btnText}>চাষাবাদ পদ্ধতি</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'রোগ ও প্রতিরোধ', props.item.info_5)}>
+                <TouchableOpacity style={styles.btn} onPress={() => modalHandler(item['name_bn'],'রোগ ও প্রতিরোধ', item.disease_and_prevention.bn)}>
                     <Text style={styles.btnText}>রোগ ও প্রতিরোধ</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.contactBtn} onPress={() => setContact(true)}>
@@ -130,6 +137,7 @@ function Seed(props) {
                             </Text>
                         </View>
                         <View style={styles.infoBox}>
+                        { loading ? <ActivityIndicator style={styles.loading} color="green" size="small" /> : null }
                             <TouchableOpacity style={styles.contactBtnChoice} onPress={() => nearestRepresentitiveHandler('ডিলার')}>
                             <Feather name="shopping-bag" size={12} color="white" />
                                 <Text style={styles.callBtnText} >ডিলার</Text>
@@ -180,7 +188,7 @@ function Seed(props) {
 
 const styles = StyleSheet.create({
     seedCard: {
-        height: 400,
+        height: 410,
         width: '45%',
         borderRadius: 15,
         backgroundColor: '#fff',
@@ -191,16 +199,27 @@ const styles = StyleSheet.create({
     image: {
         height: 120,
     },
+    usp: {
+        backgroundColor: '#dcdcdcb3',
+        paddingHorizontal: 5,
+        paddingVertical: 1,
+        borderTopRightRadius: 15,
+        borderTopLeftRadius: 15,
+        textAlign: 'center',
+        width: '100%',
+        fontSize: 12,
+        lineHeight: 15
+    },
     title: {
         backgroundColor: '#e1ff3eed',
         paddingHorizontal: 5,
         paddingVertical: 1,
-        borderBottomRightRadius: 15,
-        borderTopLeftRadius: 15,
+        // borderTopRightRadius: 15,
+        // borderTopLeftRadius: 15,
         textAlign: 'center',
         fontWeight: 'bold',
-        width: 120,
-        fontSize: 13,
+        width: '100%',
+        fontSize: 12,
         elevation: 2
     },
     pkgInfo: {
@@ -298,7 +317,9 @@ const styles = StyleSheet.create({
         marginVertical: 20
     },
     description: {
-        padding: 15
+        padding: 15,
+
+        
     },
     infoBox: {
         alignSelf: 'center',
