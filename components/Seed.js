@@ -6,6 +6,7 @@ import { Feather, Fontisto } from '@expo/vector-icons';
 function Seed(props) {
     const [modalOpen, setModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [contact, setContact] = useState(false);
     const [nearestRepresentitive, setNearestRepresentitive] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
     const [modalData, setModalData] = useState([{
@@ -14,6 +15,7 @@ function Seed(props) {
         description: ''
     }]);
     const [data, setData] = useState([{
+        title: '',
         name: '',
         mobile_no: '',
         address: '',
@@ -21,7 +23,8 @@ function Seed(props) {
         lon: ''
     }]);
 
-    function nearestRepresentitiveHandler(){
+    function nearestRepresentitiveHandler(title){
+        // setContact(false);
         if(props.location){
             fetch('http://45.251.57.52/demo/login_2018_19/api_mobile_controller/get_representatives_with_location/'+props.location.coords.latitude+'/'+props.location.coords.longitude+'/1', {
                 method: 'GET',
@@ -29,6 +32,7 @@ function Seed(props) {
             .then((json) => {
                 if(json.code == 200){
                     setData({
+                        title: title,
                         name: json.response.name,
                         mobile_no: json.response.mobile_no,
                         address: json.response.address,
@@ -48,7 +52,9 @@ function Seed(props) {
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                   },
-                  { text: "ঠিক আছে", onPress: () => console.log("OK Pressed") }
+                  { 
+                    text: "ঠিক আছে", onPress: () => console.log("OK Pressed")
+                  }
                 ]
             );
         }
@@ -93,7 +99,7 @@ function Seed(props) {
                 <TouchableOpacity style={styles.btn} onPress={() => modalHandler(props.item.title,'রোগ ও প্রতিরোধ', props.item.info_5)}>
                     <Text style={styles.btnText}>রোগ ও প্রতিরোধ</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.contactBtn} onPress={() => nearestRepresentitiveHandler()}>
+                <TouchableOpacity style={styles.contactBtn} onPress={() => setContact(true)}>
                 { loading ? <ActivityIndicator color="#ffffff" size="small" />: <Fontisto name="map-marker-alt" size={12} color="white" /> }
                     <Text style={styles.contactBtnText}>যোগাযোগ করুন</Text>
                 </TouchableOpacity>
@@ -115,12 +121,38 @@ function Seed(props) {
                     </View>
                 </View>
             </Modal>
-            <Modal visible={nearestRepresentitive}>
-                <View style={styles.modal}>
+            <Modal visible={contact}>
+                <View style={styles.modal} >
                     <View style={styles.modalBody}>
                         <View>
                             <Text style={styles.locationModalTitle}>
-                                নিকটবর্তী প্রতিনিধি
+                                আপনি কার সাথে যোগাযোগ করতে চান?
+                            </Text>
+                        </View>
+                        <View style={styles.infoBox}>
+                            <TouchableOpacity style={styles.contactBtnChoice} onPress={() => nearestRepresentitiveHandler('ডিলার')}>
+                            <Feather name="shopping-bag" size={12} color="white" />
+                                <Text style={styles.callBtnText} >ডিলার</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.contactBtnChoice} onPress={() => nearestRepresentitiveHandler('নিকটবর্তী প্রতিনিধি')}>
+                            <Feather name="user" size={12} color="white" />
+                                <Text style={styles.callBtnText} >নিকটবর্তী প্রতিনিধি</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.modalFooter}>
+                        <Pressable onPress={() => setContact(false)}>
+                            <Feather name="x-circle" size={40} color="gray" />
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
+            <Modal visible={nearestRepresentitive}>
+                <View style={styles.modal} >
+                    <View style={styles.modalBody}>
+                        <View>
+                            <Text style={styles.locationModalTitle}>
+                               {data.title}
                             </Text>
                         </View>
                         <View style={styles.infoBox}>
@@ -136,7 +168,7 @@ function Seed(props) {
                         <Text style={styles.info_name}>{ data.lon }</Text>  */}
                     </View>
                     <View style={styles.modalFooter}>
-                        <Pressable onPress={() => setNearestRepresentitive(false)}>
+                        <Pressable onPress={() => {setNearestRepresentitive(false); setContact(false)}}>
                             <Feather name="x-circle" size={40} color="gray" />
                         </Pressable>
                     </View>
@@ -249,7 +281,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     modalBody: {
-
+       justifyContent: 'center'
     },
     modalHeader: {
         padding: 15,
@@ -269,6 +301,8 @@ const styles = StyleSheet.create({
         padding: 15
     },
     infoBox: {
+        alignSelf: 'center',
+        width: 300,
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
@@ -276,20 +310,39 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         paddingTop: 25,
         paddingBottom: 30,
-        paddingHorizontal: 5
+        paddingHorizontal: 8
     },
     infoName: {
         fontSize: 24,
     },
     infoMobile: {
-        fontSize: 16,
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginTop: 5
     },
     infoAddress: {
         fontSize: 16,
+        textAlign: 'center',
+        marginTop: 5
     },
     locationModalTitle: {
         fontSize: 30,
-        marginVertical: 30
+        marginVertical: 30,
+        textAlign: 'center'
+
+    },
+    contactBtnChoice: {
+        flexDirection:'row',
+        width: 200,
+        backgroundColor: '#3a984e',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 7,
+        paddingVertical: 10,
+        borderRadius: 20,
+        marginBottom: 10,
+        marginTop: 10,
+        elevation: 2
     }
 });
 export default Seed;
