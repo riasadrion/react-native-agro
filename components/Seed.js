@@ -23,8 +23,8 @@ function Seed(props) {
 
     function nearestRepresentitiveHandler(){
         if(props.location){
-            fetch('http://192.168.5.70/login_2018_19/api_mobile_controller/get_representatives_with_location/'+props.location.coords.latitude+'/'+props.location.coords.longitude+'/1', {
-            method: 'GET',
+            fetch('http://45.251.57.52/demo/login_2018_19/api_mobile_controller/get_representatives_with_location/'+props.location.coords.latitude+'/'+props.location.coords.longitude+'/1', {
+                method: 'GET',
             }).then(response => response.json())
             .then((json) => {
                 if(json.code == 200){
@@ -35,13 +35,23 @@ function Seed(props) {
                         lat: json.response.current_latitude,
                         lon: json.response.current_longitude,
                     });
-                    console.log(json);
                 };
             });
+            setNearestRepresentitive(true);
         }else{
-            console.log('not found');
+            Alert.alert(
+                "সতর্কতা",
+                "আপনার লোকেশন খুঁজে পাওয়া যায়নি, দয়া করে লোকেশন ব্যবহার করার অনুমতি দিন",
+                [
+                  {
+                    text: "বন্ধ করুন",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                  { text: "ঠিক আছে", onPress: () => console.log("OK Pressed") }
+                ]
+            );
         }
-        setNearestRepresentitive(true);
 
     };
 

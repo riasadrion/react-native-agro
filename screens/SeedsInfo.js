@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
 import Main from '../components/layouts/Main';
 import Seed from '../components/Seed';
 import * as Location from 'expo-location';
 
-    const DATA = [
+  const DATA = [
         {
             id: '1',
             title: 'সামার হোয়াইট',
@@ -80,37 +80,50 @@ import * as Location from 'expo-location';
           color: '#525252',
           fontSize: 20
       },
+      loading: {
+          position: 'absolute',
+          alignSelf: 'center',
+          zIndex: 2,
+          marginVertical: '50%',
+          backgroundColor: '#ecffe4de',
+          borderRadius: 10,
+          width: '50%',
+      }
   });
 
 class SeedsInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {currentLocation: ""};
+    this.state = {
+        currentLocation: "",
+    };
   }
+  
   componentDidMount() {
     (async () => {
-     let { status } = await Location.requestForegroundPermissionsAsync();
-     if (status !== 'granted') {
-         setErrorMsg('Permission to access location was denied');
-         return;
-     }
-     let location = await Location.getCurrentPositionAsync({});
-     if(location){
-         this.setState({currentLocation: location});
-     }
-     })();
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+        }
+        let location = await Location.getCurrentPositionAsync({});
+        if(location){
+            this.setState({currentLocation: location});
+        }
+       })();
   };
   render() {
     return (
       <Main>
           <View style={styles.main}>
+              { this.state.currentLocation == "" ? <ActivityIndicator style={styles.loading} color="green" size="large" /> : null }
               <SafeAreaView style={styles.cards}>
                   <FlatList
                       data={DATA}
-                      renderItem={({ item }) => <Seed location={this.state.currentLocation} item={item} />}
+                      renderItem={({ item }) => <Seed getLocation={this.getLocation} location={this.state.currentLocation} item={item} />}
                       keyExtractor={(item) => item.id}
                       numColumns={2}
-                      extraData={this.state.currentLocation}
+                      extraData={this.state.currentLocation, this.getLocation}
                     />
               </SafeAreaView>
           </View>
