@@ -78,9 +78,9 @@ function Seed(props) {
             source={{
             uri: item['images'][0],
             }} resizeMode="cover" style={styles.image}>
-                <View style={{justifyContent: 'flex-start', flex:1}}>
+                {/* <View style={{justifyContent: 'flex-start', flex:1}}>
                     <Text style={styles.usp}>{item.usp.bn}</Text>
-                </View>
+                </View> */}
             </ImageBackground>
 
             <View>

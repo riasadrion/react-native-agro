@@ -6,7 +6,7 @@ import Home from '../screens/Home';
 import SeedsInfo from '../screens/SeedsInfo'
 const Stack = createStackNavigator();
 const MainStacks = () => {
-  return (
+  return ( 
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: true }}>
         <Stack.Screen
