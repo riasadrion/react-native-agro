@@ -99,33 +99,57 @@ class SeedsInfo extends React.Component {
         varieties: ""
     };
   }
-  
-  componentDidMount() {
-       // fetching location 
-        (async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            setErrorMsg('Permission to access location was denied');
-            return;
-        }
-        let location = await Location.getCurrentPositionAsync({});
+
+
+  async componentDidMount() {
+ 
+     // fetching data 
+     fetch('http://45.251.57.52/demo/login_2018_19/api_mobile_controller/get_varieties', {
+          method: 'GET',
+      }).then(response => response.json())
+      .then((json) => {
+          if(json.code == 200){
+              this.setState({varieties: json.data});
+              console.log(this.state.varieties)
+          }
+
+      });
+      //setting up the location
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
         if(location){
-            this.setState({currentLocation: location});
-        }
-       })();
-
-       // fetching data 
-       fetch('http://192.168.5.70/login_2018_19/api_mobile_controller/get_varieties', {
-            method: 'GET',
-        }).then(response => response.json())
-        .then((json) => {
-            if(json.code == 200){
-                this.setState({varieties: json.data});
-                console.log(this.state.varieties)
-            }
-
-        });
+        this.setState({currentLocation: location});
+       }
+   
   };
+//   componentDidMount() {
+//        // fetching location 
+//         let { status } = Location.requestForegroundPermissionsAsync();
+
+//         let location = Location.getCurrentPositionAsync({});
+
+//         if(location){
+//             this.setState({currentLocation: location});
+//         }
+       
+
+//        // fetching data 
+//        fetch('http://192.168.5.70/login_2018_19/api_mobile_controller/get_varieties', {
+//             method: 'GET',
+//         }).then(response => response.json())
+//         .then((json) => {
+//             if(json.code == 200){
+//                 this.setState({varieties: json.data});
+//                 console.log(this.state.varieties)
+//             }
+
+//         });
+//   };
   render() {
     return (
       <Main>

@@ -20,7 +20,8 @@ function Seed(props) {
         mobile_no: '',
         address: '',
         lat: '',
-        lon: ''
+        lon: '',
+        distance: ''
     }]);
     function nearestRepresentitiveHandler(title){
         // setContact(false);
@@ -38,6 +39,7 @@ function Seed(props) {
                         address: json.response.address,
                         lat: json.response.current_latitude,
                         lon: json.response.current_longitude,
+                        distance: json.response.linear_distance + ' ' +json.response.linear_distance_unit,
                     });
                     setLoading(false);
                     setNearestRepresentitive(true);
@@ -167,6 +169,7 @@ function Seed(props) {
                             <Text style={styles.infoName}>{data.name}</Text>
                             <Text style={styles.infoMobile}>{data.mobile_no}</Text>
                             <Text style={styles.infoAddress}>{ data.address }</Text>
+                            <Text style={styles.infoAddress}>দূরত্ব: { data.distance }</Text>
                             <TouchableOpacity style={styles.callBtn} onPress={()=>{Linking.openURL('tel:'+ data.mobile_no+'');}}>
                             <Feather name="phone" size={12} color="white" />
                                 <Text style={styles.callBtnText} >কল করুন</Text>
@@ -214,8 +217,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#e1ff3eed',
         paddingHorizontal: 5,
         paddingVertical: 1,
-        // borderTopRightRadius: 15,
-        // borderTopLeftRadius: 15,
         textAlign: 'center',
         fontWeight: 'bold',
         width: '100%',
@@ -335,6 +336,7 @@ const styles = StyleSheet.create({
     },
     infoName: {
         fontSize: 24,
+        textAlign: 'center'
     },
     infoMobile: {
         fontSize: 18,
